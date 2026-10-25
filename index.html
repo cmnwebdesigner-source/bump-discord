@@ -53,7 +53,7 @@
   <nav class="sticky top-0 z-50 glass-panel border-b-0 border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
       <!-- Logo -->
-      <a href="#" onclick="showView('home')" class="flex items-center gap-3 group cursor-pointer">
+      <a onclick="showView('home')" class="flex items-center gap-3 group cursor-pointer">
         <div class="w-10 h-10 bg-discord rounded-xl flex items-center justify-center font-black text-xl shadow-lg shadow-discord/20 group-hover:scale-105 transition-transform">
           B
         </div>
@@ -62,27 +62,26 @@
 
       <!-- Căutare Centrală -->
       <div class="hidden md:flex flex-1 max-w-xl mx-8 relative">
-        <input type="text" placeholder="Caută servere, jocuri sau tag-uri..." class="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 pl-12 pr-4 text-sm text-white placeholder-white/40 focus:outline-none focus:border-gold/50 transition-colors">
+        <input id="search-bar" type="text" placeholder="Caută servere, jocuri sau tag-uri..." class="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 pl-12 pr-4 text-sm text-white placeholder-white/40 focus:outline-none focus:border-gold/50 transition-colors">
         <svg class="w-5 h-5 absolute left-4 top-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
       </div>
 
       <!-- Zona Dreapta (Butoane / Profil) -->
       <div class="flex items-center gap-4">
-        <!-- Buton Login (Vizibil când e delogat) -->
+        <!-- Buton Login -->
         <button id="btn-login" onclick="loginWithDiscord()" class="flex items-center gap-2 bg-white/10 hover:bg-discord text-white font-semibold py-2 px-5 rounded-xl transition-all duration-300 text-sm">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152... (scurtat pentru estetică) ...Z"/></svg>
           Login
         </button>
 
-        <!-- Profil Dropdown (Vizibil când e logat) -->
+        <!-- Profil Dropdown -->
         <div id="user-menu" class="hidden items-center gap-3">
           <button onclick="showView('dashboard')" class="hidden sm:block text-sm font-medium text-white/70 hover:text-gold transition-colors">Panoul Meu</button>
           <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
-          <div class="flex items-center gap-3 bg-black/30 py-1.5 pl-1.5 pr-4 rounded-full border border-white/10 cursor-pointer hover:border-white/20 transition-colors" onclick="toggleDropdown()">
+          <div class="flex items-center gap-3 bg-black/30 py-1.5 pl-1.5 pr-4 rounded-full border border-white/10">
             <img id="nav-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
             <span id="nav-username" class="text-sm font-semibold text-white/90">...</span>
           </div>
-          <button onclick="logout()" class="p-2 text-red-400/80 hover:text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors">
+          <button onclick="logout()" class="p-2 text-red-400/80 hover:text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors" title="Deconectare">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
           </button>
         </div>
@@ -96,7 +95,7 @@
     <!-- VEDERE: HOME (Lista Publică) -->
     <div id="view-home" class="block animate-[slideIn_0.3s_ease]">
       <!-- Hero Section -->
-      <div class="text-center py-16 md:py-24">
+      <div class="text-center py-12 md:py-20">
         <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight">Găsește comunitatea ta pe <span class="gold-gradient">Discord</span></h1>
         <p class="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10">Peste 10,000 de servere te așteaptă. Promovează-ți propriul server și crește-ți audiența folosind sistemul nostru automat de BUMP.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
@@ -109,62 +108,25 @@
         </div>
       </div>
 
-      <!-- Servere Publice (Exemplu) -->
+      <!-- Servere Publice -->
       <div id="explore-section" class="mt-8">
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-2xl font-bold border-l-4 border-gold pl-3">Servere Recente (Mockup)</h2>
-          <div class="flex gap-2">
-            <span class="px-3 py-1 bg-discord/20 text-discord text-xs font-bold rounded-lg cursor-pointer">Gaming</span>
-            <span class="px-3 py-1 glass-panel text-white/70 text-xs font-bold rounded-lg cursor-pointer hover:text-white">Social</span>
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <h2 class="text-2xl font-bold border-l-4 border-gold pl-3">Servere Recente</h2>
+          <div class="flex flex-wrap gap-2" id="tag-filters">
+            <button onclick="filterByTag('')" class="px-3 py-1 bg-discord/20 text-discord text-xs font-bold rounded-lg transition-colors">Toate</button>
+            <button onclick="filterByTag('gaming')" class="px-3 py-1 glass-panel text-white/70 hover:text-white text-xs font-bold rounded-lg transition-colors">Gaming</button>
+            <button onclick="filterByTag('social')" class="px-3 py-1 glass-panel text-white/70 hover:text-white text-xs font-bold rounded-lg transition-colors">Social</button>
+            <button onclick="filterByTag('cs1.6')" class="px-3 py-1 glass-panel text-white/70 hover:text-white text-xs font-bold rounded-lg transition-colors">CS 1.6</button>
+            <button onclick="filterByTag('chill')" class="px-3 py-1 glass-panel text-white/70 hover:text-white text-xs font-bold rounded-lg transition-colors">Chill</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Card Server Public 1 -->
-          <div class="glass-panel rounded-2xl overflow-hidden group hover:border-discord/50 transition-all duration-300">
-            <div class="h-24 bg-gradient-to-r from-purple-600 to-blue-600 relative">
-              <div class="absolute -bottom-6 left-4 border-4 border-obsidian rounded-xl overflow-hidden shadow-lg">
-                <img src="https://cdn.discordapp.com/embed/avatars/1.png" class="w-16 h-16 bg-black" alt="Icon">
-              </div>
-              <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span> 1,240 Membri
-              </div>
-            </div>
-            <div class="p-5 pt-10">
-              <h3 class="text-xl font-bold mb-2 group-hover:text-discord transition-colors">Romania Roleplay</h3>
-              <p class="text-sm text-white/60 mb-4 line-clamp-2">Cel mai mare server de GTA V Roleplay. Economie realistă, mafii, poliție și multe alte sisteme custom.</p>
-              <div class="flex gap-2 mb-6">
-                <span class="text-xs bg-white/5 px-2 py-1 rounded text-white/50">#gaming</span>
-                <span class="text-xs bg-white/5 px-2 py-1 rounded text-white/50">#fivem</span>
-              </div>
-              <button class="w-full bg-white/10 hover:bg-discord text-white font-semibold py-2.5 rounded-xl transition-colors">
-                Alătură-te
-              </button>
-            </div>
-          </div>
-
-           <!-- Card Server Public 2 -->
-           <div class="glass-panel rounded-2xl overflow-hidden group hover:border-gold/50 transition-all duration-300">
-            <div class="h-24 bg-gradient-to-r from-yellow-600 to-red-600 relative">
-              <div class="absolute -bottom-6 left-4 border-4 border-obsidian rounded-xl overflow-hidden shadow-lg">
-                <img src="https://cdn.discordapp.com/embed/avatars/4.png" class="w-16 h-16 bg-black" alt="Icon">
-              </div>
-              <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span> 850 Membri
-              </div>
-            </div>
-            <div class="p-5 pt-10">
-              <h3 class="text-xl font-bold mb-2 group-hover:text-gold transition-colors">Lounge Social</h3>
-              <p class="text-sm text-white/60 mb-4 line-clamp-2">Comunitate chill pentru discuții, filme seara, muzică și mini-games. Căutăm staff activ!</p>
-              <div class="flex gap-2 mb-6">
-                <span class="text-xs bg-white/5 px-2 py-1 rounded text-white/50">#social</span>
-                <span class="text-xs bg-white/5 px-2 py-1 rounded text-white/50">#chill</span>
-              </div>
-              <button class="w-full bg-white/10 hover:bg-discord text-white font-semibold py-2.5 rounded-xl transition-colors">
-                Alătură-te
-              </button>
-            </div>
-          </div>
+        <div id="explore-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Cardurile vor fi generate automat aici de JavaScript -->
+        </div>
+        
+        <div id="no-results" class="hidden text-center py-12 text-white/50">
+          Nu s-au găsit servere care să corespundă căutării.
         </div>
       </div>
     </div>
@@ -178,7 +140,7 @@
         </div>
         <button class="bg-gold hover:bg-goldHover text-obsidian font-bold py-2.5 px-5 rounded-xl transition-transform hover:scale-105 shadow-lg shadow-gold/20 flex items-center gap-2 text-sm">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-          Adaugă Server Nou
+          Sincronizează
         </button>
       </div>
 
@@ -199,39 +161,177 @@
   </footer>
 
   <script>
+    // --- BAZA DE DATE MOCKUP PENTRU SERVERUL PUBLIC ---
+    const publicServers = [
+      {
+        name: "CS.OLDSKILL.RO Community",
+        members: "1,240",
+        tags: ["gaming", "cs1.6", "romania"],
+        desc: "Comunitatea oficială pentru serverele CS.OLDSKILL.RO și CS.KITSUNE.RO. Vino să joci alături de veterani, eventuri custom și gameplay optimizat la maximum.",
+        icon: "https://cdn.discordapp.com/embed/avatars/3.png",
+        bg: "from-yellow-600 to-red-600"
+      },
+      {
+        name: "FRIDAY NIGHT FUNKIN' FANS",
+        members: "12,986",
+        tags: ["gaming", "fnf", "newgrounds"],
+        desc: "Discord's freshest community server for the hit rhythm game! Dedicated channels for mod help and a welcoming community.",
+        icon: "https://cdn.discordapp.com/embed/avatars/0.png",
+        bg: "from-blue-600 to-purple-600"
+      },
+      {
+        name: "🪽 delusional ʚɞ",
+        members: "7,982",
+        tags: ["social", "dm", "chill"],
+        desc: "1 social sfw active server / 250+ stickers / emotes. 24/7 active chats & vc's, daily giveaways.",
+        icon: "https://cdn.discordapp.com/embed/avatars/1.png",
+        bg: "from-pink-500 to-rose-500"
+      },
+      {
+        name: "🐈🎐 lovecat 🦋",
+        members: "15,499",
+        tags: ["social", "community", "make-friends"],
+        desc: "Custom Guild Tag, Active Chats & VCs, Cute Cat Emojis & Stickers. Come Join us today!",
+        icon: "https://cdn.discordapp.com/embed/avatars/2.png",
+        bg: "from-cyan-500 to-blue-500"
+      },
+      {
+        name: "Dopamine",
+        members: "22,761",
+        tags: ["social", "chat", "roblox"],
+        desc: "One of the earliest Discord servers. Tons of Nitro Giveaways, Active Community, Custom Roles, 500+ emotes!",
+        icon: "https://cdn.discordapp.com/embed/avatars/4.png",
+        bg: "from-purple-600 to-pink-600"
+      },
+      {
+        name: "ChillZone",
+        members: "78,962",
+        tags: ["chill", "active", "vc"],
+        desc: "Join 500k+ members at this super active server to meet new friends and just chill in. Soundboards & active VCs!",
+        icon: "https://cdn.discordapp.com/embed/avatars/5.png",
+        bg: "from-indigo-600 to-blue-600"
+      },
+      {
+        name: "The Wyvern Nest | Art",
+        members: "9,315",
+        tags: ["art", "artist", "commissions"],
+        desc: "Buy & sell art in TWN: made by artists, for artists! Frequent contests w/ monetary prizes, unique corner for OCs.",
+        icon: "https://cdn.discordapp.com/embed/avatars/0.png",
+        bg: "from-teal-500 to-emerald-500"
+      }
+    ];
+
+    // --- RANDARE SERVERE PUBLICE ---
+    function renderPublicServers(serversToRender) {
+      const grid = document.getElementById('explore-grid');
+      const noResults = document.getElementById('no-results');
+      grid.innerHTML = '';
+      
+      if(serversToRender.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      } else {
+        noResults.classList.add('hidden');
+      }
+
+      serversToRender.forEach(server => {
+        const tagsHtml = server.tags.map(t => `<span class="text-[11px] bg-white/10 px-2 py-0.5 rounded text-white/70">#${t}</span>`).join('');
+        
+        const card = document.createElement('div');
+        card.className = 'glass-panel rounded-2xl overflow-hidden group hover:border-white/20 transition-all duration-300 flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="h-24 bg-gradient-to-r ${server.bg} relative">
+              <div class="absolute -bottom-6 left-4 border-4 border-obsidian rounded-xl overflow-hidden shadow-lg">
+                <img src="${server.icon}" class="w-16 h-16 bg-black object-cover" alt="Icon">
+              </div>
+              <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1.5 uppercase">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span> ${server.members}
+              </div>
+            </div>
+            <div class="p-5 pt-10">
+              <h3 class="text-xl font-bold mb-2 group-hover:text-discord transition-colors">${server.name}</h3>
+              <p class="text-sm text-white/60 mb-4 line-clamp-3">${server.desc}</p>
+              <div class="flex flex-wrap gap-1.5 mb-6">
+                ${tagsHtml}
+              </div>
+            </div>
+          </div>
+          <div class="p-5 pt-0 mt-auto">
+            <button onclick="joinServer('${server.name}')" class="w-full bg-white/10 hover:bg-discord text-white font-semibold py-2.5 rounded-xl transition-colors">
+              Alătură-te
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Funcție căutare real-time
+    document.getElementById('search-bar').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = publicServers.filter(s => 
+        s.name.toLowerCase().includes(query) || 
+        s.tags.some(t => t.toLowerCase().includes(query))
+      );
+      renderPublicServers(filtered);
+    });
+
+    // Funcție butoane filtre
+    function filterByTag(tag) {
+      // Highlight activ buton
+      const buttons = document.querySelectorAll('#tag-filters button');
+      buttons.forEach(b => {
+        b.classList.remove('bg-discord/20', 'text-discord');
+        b.classList.add('glass-panel', 'text-white/70');
+      });
+      event.target.classList.remove('glass-panel', 'text-white/70');
+      event.target.classList.add('bg-discord/20', 'text-discord');
+
+      if(!tag) {
+        renderPublicServers(publicServers);
+      } else {
+        const filtered = publicServers.filter(s => s.tags.includes(tag.toLowerCase()));
+        renderPublicServers(filtered);
+      }
+    }
+
+    // Acțiune Alăturare
+    function joinServer(name) {
+      alert(`Te redirecționăm către invitația serverului: ${name}...\n(În varianta finală cu bot, aici se deschide link-ul)`);
+    }
+
+    // --- SISTEM AUTENTIFICARE DISCORD ---
     const CLIENT_ID = '1563926720959094896'; 
     const REDIRECT_URI = encodeURIComponent('https://bump-discord.vercel.app');
 
-    // Funcții de navigare între tab-uri
-    function showView(viewName) {
-      document.getElementById('view-home').classList.add('hidden');
-      document.getElementById('view-dashboard').classList.add('hidden');
-      document.getElementById(`view-${viewName}`).classList.remove('hidden');
+    function loginWithDiscord() {
+      window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify%20guilds`;
+    }
+
+    function logout() {
+      localStorage.removeItem('discord_token');
+      window.location.href = window.location.pathname; 
     }
 
     function checkLoginForAdd() {
-      const token = localStorage.getItem('discord_token');
-      if (!token) {
-        alert("Te rugăm să te conectezi mai întâi pentru a adăuga un server!");
+      if (!localStorage.getItem('discord_token')) {
         loginWithDiscord();
       } else {
         showView('dashboard');
       }
     }
 
-    // Funcții Autentificare
-    function loginWithDiscord() {
-      const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify%20guilds`;
-      window.location.href = authUrl;
+    function showView(viewName) {
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById(`view-${viewName}`).classList.remove('hidden');
     }
 
-    function logout() {
-      localStorage.removeItem('discord_token');
-      window.location.href = window.location.pathname; // curăță URL-ul
-    }
-
-    // Inițializare și verificare sesiune
+    // Inițializare pagină
     window.onload = () => {
+      renderPublicServers(publicServers); // încarcă serverele publice la start
+
       const fragment = new URLSearchParams(window.location.hash.slice(1));
       const accessToken = fragment.get('access_token');
 
@@ -243,22 +343,16 @@
       const savedToken = localStorage.getItem('discord_token');
       
       if (savedToken) {
-        // Schimbă UI pentru user logat
         document.getElementById('btn-login').classList.add('hidden');
         document.getElementById('user-menu').classList.remove('hidden');
         document.getElementById('user-menu').classList.add('flex');
 
         fetchUserData(savedToken);
-      } else {
-        showView('home'); // Arată lista publică dacă e delogat
       }
     };
 
     function fetchUserData(token) {
-      // 1. Luăm datele userului
-      fetch('https://discord.com/api/users/@me', {
-        headers: { authorization: `Bearer ${token}` },
-      })
+      fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then(user => {
         if (user.message === '401: Unauthorized') return logout();
@@ -271,27 +365,20 @@
           : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator || 0) % 5}.png`;
         document.getElementById('nav-avatar').src = avatarUrl;
 
-        // Dacă e prima dată când se loghează (după redirect), mergem direct pe dashboard
-        if(window.location.hash === '') {
-           showView('dashboard');
-        }
+        if(window.location.hash === '') showView('dashboard');
         
-        // 2. Luăm serverele
         fetchServers(token);
       })
       .catch(console.error);
     }
 
     function fetchServers(token) {
-      fetch('https://discord.com/api/users/@me/guilds', {
-        headers: { authorization: `Bearer ${token}` }
-      })
+      fetch('https://discord.com/api/users/@me/guilds', { headers: { authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then(guilds => {
         const grid = document.getElementById('servers-grid');
         grid.innerHTML = ''; 
         
-        // Filtrare admini
         const adminGuilds = guilds.filter(g => {
           const perms = BigInt(g.permissions);
           return g.owner || (perms & 8n) === 8n || (perms & 32n) === 32n;
@@ -307,7 +394,6 @@
           return;
         }
 
-        // Generare carduri dashboard
         adminGuilds.forEach(guild => {
           const iconUrl = guild.icon 
             ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`
@@ -315,7 +401,6 @@
 
           const card = document.createElement('div');
           card.className = 'glass-panel rounded-2xl p-5 hover:border-white/20 transition-all duration-300 flex flex-col justify-between group';
-          
           card.innerHTML = `
             <div>
               <div class="flex items-center gap-4 mb-5">
@@ -326,13 +411,12 @@
                 </div>
               </div>
             </div>
-            
             <div class="flex gap-2 mt-4 pt-4 border-t border-white/5">
               <button onclick="bumpServer(this, '${guild.name}')" class="flex-1 bg-discord hover:bg-[#4752C4] text-white font-bold py-2 rounded-lg transition-all flex items-center justify-center gap-2 text-sm shadow-lg shadow-discord/20">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path></svg>
                 BUMP
               </button>
-              <button class="px-3 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded-lg transition-colors text-sm font-medium border border-white/5" title="Setări Server">
+              <button onclick="alert('Se deschide panoul de setări pentru ${guild.name}')" class="px-3 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded-lg transition-colors text-sm font-medium border border-white/5" title="Setări Server">
                 Editează
               </button>
             </div>
@@ -343,7 +427,6 @@
       .catch(console.error);
     }
 
-    // Sistem de Bump Vizual
     function bumpServer(btn, serverName) {
       const originalText = btn.innerHTML;
       btn.innerHTML = `<div class="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>`;
@@ -363,8 +446,8 @@
           btn.classList.replace('bg-green-500', 'bg-discord');
           btn.classList.replace('hover:bg-green-600', 'hover:bg-[#4752C4]');
           btn.classList.replace('shadow-green-500/20', 'shadow-discord/20');
-        }, 5000); // Revine la normal după 5 secunde (aici va fi logică de cooldown pe viitor)
-      }, 800);
+        }, 3000);
+      }, 1000);
     }
   </script>
 </body>
