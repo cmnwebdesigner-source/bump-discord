@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | CMN WebDesigner</title>
+  <title>Dashboard | Bump Discord</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     body { font-family: 'Inter', sans-serif; }
     
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 10px; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #070A1A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
   </style>
   <script>
     tailwind.config = {
@@ -29,64 +29,88 @@
     }
   </script>
 </head>
-<body class="bg-obsidian text-white min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<body class="bg-obsidian text-white min-h-screen relative overflow-x-hidden">
   
-  <!-- Background Glow Effects -->
-  <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-discord/20 rounded-full blur-[100px] pointer-events-none"></div>
-  <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-gold/10 rounded-full blur-[100px] pointer-events-none"></div>
+  <!-- Fundal cu efecte -->
+  <div class="fixed top-[-20%] left-[-10%] w-[500px] h-[500px] bg-discord/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-gold/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-  <!-- Glassmorphism Login Card -->
-  <div class="relative w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] p-8 z-10 transition-all duration-300">
+  <!-- 1. ECRANUL DE LOGIN (Apare doar dacă nu ești logat) -->
+  <div id="login-view" class="relative z-10 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] p-8 text-center">
+      <div class="w-20 h-20 mx-auto bg-[#12152A] rounded-2xl flex items-center justify-center mb-6 border border-white/10 shadow-lg shadow-discord/20">
+        <svg class="w-10 h-10 text-discord" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+        </svg>
+      </div>
+      <h2 class="text-3xl font-extrabold mb-2 tracking-tight">Bump Platform</h2>
+      <p class="text-white/60 text-sm mb-8">Conectează-te pentru a-ți promova serverul de Discord.</p>
+      
+      <button onclick="loginWithDiscord()" class="w-full flex items-center justify-center gap-3 bg-discord hover:bg-[#4752C4] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-discord/30">
+        Conectare cu Discord
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. ECRANUL DE DASHBOARD (Gen Disboard, apare după logare) -->
+  <div id="dashboard-view" class="hidden relative z-10 min-h-screen flex-col">
     
-    <!-- Not Logged In View -->
-    <div id="login-view" class="flex flex-col items-center text-center">
-      <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mb-6 border border-white/5">
-        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-        </svg>
+    <!-- Bara de navigare sus -->
+    <nav class="w-full bg-surface/80 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-discord rounded-lg flex items-center justify-center font-bold text-xl">B</div>
+          <span class="font-bold text-xl tracking-wide">BUMP <span class="text-gold">DISCORD</span></span>
+        </div>
+        
+        <div class="flex items-center gap-6">
+          <div class="hidden md:flex items-center gap-3 bg-obsidian py-1.5 px-4 rounded-full border border-white/5">
+            <img id="nav-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-gold/50">
+            <span id="nav-username" class="text-sm font-semibold text-white/90">...</span>
+          </div>
+          <button onclick="logout()" class="text-sm font-medium text-red-400 hover:text-red-300 transition-colors bg-red-400/10 px-4 py-2 rounded-lg">
+            Deconectare
+          </button>
+        </div>
       </div>
-      <h2 class="text-2xl font-bold mb-2 tracking-tight">Autentificare</h2>
-      <p class="text-white/60 text-sm mb-8">Conectează-te pentru a accesa platforma și beneficiile comunității.</p>
-      
-      <button onclick="loginWithDiscord()" class="w-full flex items-center justify-center gap-3 bg-discord hover:bg-[#4752C4] text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg shadow-discord/30">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
-        </svg>
-        Login cu Discord
-      </button>
-    </div>
+    </nav>
 
-    <!-- Logged In View (Hidden by default) -->
-    <div id="profile-view" class="hidden flex-col items-center text-center">
-      <div class="relative mb-4">
-        <img id="user-avatar" src="" alt="Avatar" class="w-24 h-24 rounded-full border-2 border-gold/50 shadow-lg shadow-gold/20 object-cover">
-        <div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-2 border-obsidian rounded-full"></div>
-      </div>
-      <h2 id="user-name" class="text-2xl font-bold mb-1">...</h2>
-      <p class="text-white/60 text-sm mb-6 flex items-center justify-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-green-500"></span> Conectat cu succes
-      </p>
-      
-      <div class="w-full bg-black/20 rounded-xl p-4 mb-6 border border-white/5 text-left">
-        <p class="text-xs text-white/40 uppercase font-semibold mb-1">Status Cont</p>
-        <p class="text-sm text-white/90">Autentificarea a fost realizată prin OAuth2. Poți accesa acum dashboard-ul.</p>
+    <!-- Conținut Principal -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-6 py-12">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+        <div>
+          <h1 class="text-4xl font-extrabold mb-3">Panou de Control</h1>
+          <p class="text-white/60 text-lg">Gestionează și promovează serverele tale de Discord.</p>
+        </div>
+        <button class="bg-gold hover:bg-yellow-500 text-obsidian font-bold py-3 px-6 rounded-xl transition-transform hover:scale-105 shadow-lg shadow-gold/20 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Adaugă Server Nou
+        </button>
       </div>
 
-      <button onclick="logout()" class="w-full bg-white/5 hover:bg-white/10 text-white font-medium py-3 px-6 rounded-xl border border-white/10 transition-colors">
-        Deconectare
-      </button>
-    </div>
+      <!-- Zona unde vor apărea cardurile cu servere -->
+      <div class="mb-6 flex items-center justify-between">
+        <h2 class="text-xl font-bold border-l-4 border-discord pl-3">Serverele Tale (Admin/Owner)</h2>
+      </div>
+
+      <!-- Grid Servere -->
+      <div id="servers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Aici se va genera un loader până vin datele -->
+        <div id="loader" class="col-span-full text-center py-12 text-white/50 animate-pulse">
+          Se încarcă serverele tale din Discord...
+        </div>
+      </div>
+    </main>
 
   </div>
 
   <script>
-    // 1. CONFIGURARE APLICAȚIE DISCORD
     const CLIENT_ID = '1563926720959094896'; 
     const REDIRECT_URI = encodeURIComponent('https://bump-discord.vercel.app');
 
+    // ATENȚIE: Am adăugat '%20guilds' la scope ca să putem citi lista de servere a userului
     function loginWithDiscord() {
-      // Deschide fereastra de autorizare Discord
-      const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify`;
+      const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify%20guilds`;
       window.location.href = discordAuthUrl;
     }
 
@@ -96,54 +120,111 @@
       window.location.reload();
     }
 
-    // Verificăm dacă URL-ul conține token-ul după ce Discord face redirect
     window.onload = () => {
       const fragment = new URLSearchParams(window.location.hash.slice(1));
       const accessToken = fragment.get('access_token');
 
       if (accessToken) {
-        // Salvăm token-ul local
         localStorage.setItem('discord_token', accessToken);
-        // Curățăm URL-ul pentru un aspect curat
         window.history.replaceState(null, null, window.location.pathname);
       }
 
       const savedToken = localStorage.getItem('discord_token');
       
       if (savedToken) {
-        // Dacă avem token, preluăm datele utilizatorului
+        // 1. Preluăm datele utilizatorului
         fetch('https://discord.com/api/users/@me', {
-          headers: {
-            authorization: `Bearer ${savedToken}`,
-          },
+          headers: { authorization: `Bearer ${savedToken}` },
         })
         .then(result => result.json())
-        .then(response => {
-          if (response.message === '401: Unauthorized') {
-            logout();
-            return;
-          }
+        .then(user => {
+          if (user.message === '401: Unauthorized') return logout();
           
-          // Ascundem formularul de login și afișăm profilul
+          // Schimbăm UI-ul: ascundem login-ul, arătăm dashboard-ul
           document.getElementById('login-view').classList.add('hidden');
-          document.getElementById('profile-view').classList.remove('hidden');
-          document.getElementById('profile-view').classList.add('flex');
+          document.getElementById('dashboard-view').classList.remove('hidden');
+          document.getElementById('dashboard-view').classList.add('flex');
           
-          // Actualizăm UI-ul cu datele reale
-          const { username, discriminator, avatar, id } = response;
-          const displayName = discriminator === '0' ? username : `${username}#${discriminator}`;
-          document.getElementById('user-name').innerText = displayName;
+          const displayName = user.discriminator === '0' ? user.username : `${user.username}#${user.discriminator}`;
+          document.getElementById('nav-username').innerText = displayName;
           
-          // Generăm link-ul pentru avatar
-          const avatarUrl = avatar 
-            ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=256` 
-            : `https://cdn.discordapp.com/embed/avatars/${parseInt(discriminator || 0) % 5}.png`;
-          
-          document.getElementById('user-avatar').src = avatarUrl;
+          const avatarUrl = user.avatar 
+            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` 
+            : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator || 0) % 5}.png`;
+          document.getElementById('nav-avatar').src = avatarUrl;
+
+          // 2. Preluăm serverele (guilds) utilizatorului
+          fetchServers(savedToken);
         })
         .catch(console.error);
       }
     };
+
+    function fetchServers(token) {
+      fetch('https://discord.com/api/users/@me/guilds', {
+        headers: { authorization: `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(guilds => {
+        const grid = document.getElementById('servers-grid');
+        grid.innerHTML = ''; // Ștergem loader-ul
+        
+        // Filtrăm doar serverele unde userul e Owner sau are permisiunea MANAGE_GUILD / ADMINISTRATOR
+        // Permisiunile în Discord API vin ca un număr uriaș, verificăm flag-urile
+        const adminGuilds = guilds.filter(g => {
+          const perms = BigInt(g.permissions);
+          const isOwner = g.owner;
+          const hasAdmin = (perms & 8n) === 8n;
+          const hasManageGuild = (perms & 32n) === 32n;
+          return isOwner || hasAdmin || hasManageGuild;
+        });
+
+        if (adminGuilds.length === 0) {
+          grid.innerHTML = `<div class="col-span-full bg-white/5 border border-white/10 rounded-xl p-8 text-center text-white/60">Nu ești administrator pe niciun server de Discord.</div>`;
+          return;
+        }
+
+        // Generăm câte un card (gen Disboard) pentru fiecare server
+        adminGuilds.forEach(guild => {
+          const iconUrl = guild.icon 
+            ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`
+            : `https://cdn.discordapp.com/embed/avatars/0.png`; // Fallback dacă serverul nu are poză
+
+          const card = document.createElement('div');
+          card.className = 'bg-surface/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-discord/50 transition-all duration-300 group flex flex-col justify-between';
+          
+          card.innerHTML = `
+            <div>
+              <div class="flex items-center gap-4 mb-4">
+                <img src="${iconUrl}" alt="Icon" class="w-16 h-16 rounded-xl shadow-lg object-cover">
+                <div>
+                  <h3 class="font-bold text-lg leading-tight group-hover:text-discord transition-colors">${guild.name}</h3>
+                  <p class="text-xs text-white/40 mt-1 uppercase">ID: ${guild.id.substring(0,8)}...</p>
+                </div>
+              </div>
+              <p class="text-sm text-white/60 mb-6 line-clamp-2">Apasă pe BUMP pentru a urca acest server în lista publică și a atrage membri noi.</p>
+            </div>
+            
+            <div class="flex gap-2">
+              <button onclick="bumpServer('${guild.name}')" class="flex-1 bg-discord hover:bg-[#4752C4] text-white font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path></svg>
+                BUMP
+              </button>
+              <button class="px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors">
+                <svg class="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              </button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      })
+      .catch(console.error);
+    }
+
+    // Funcție falsă pentru butonul de BUMP (poți pune logica reală de server aici ulterior)
+    function bumpServer(serverName) {
+      alert(`Ai dat BUMP cu succes serverului: ${serverName}! \nÎn viitor, aici va face apel către bot-ul tău.`);
+    }
   </script>
 </body>
 </html>
